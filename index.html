@@ -103,7 +103,7 @@ const ING=['00'],BEV=['30'],UIT=['35','40','42','50'],AFG=['60','65','70'],ALL_S
 const SL={'00':'Ingevoerd','30':'Bevestigd','35':'In Batchpicking','40':'In uitvoering','42':'Geconsolideerd','50':'Gedeeltelijk geleverd','60':'Afgh. volledig','65':'Afgh. onvolledig','70':'Afgh. geen lev.'};
 const CN={NL:'Netherlands',GB:'United Kingdom',BE:'Belgium',US:'United States',FR:'France',DE:'Germany',ES:'Spain',CA:'Canada',AT:'Austria',IT:'Italy',SE:'Sweden',DK:'Denmark',PL:'Poland',CH:'Switzerland',NO:'Norway',FI:'Finland',PT:'Portugal',CZ:'Czech Republic',HU:'Hungary',AU:'Australia'};
 const LC=['#00e5c0','#4da6ff','#ff9a3c','#ff6b9d','#a78bfa','#ffd93d','#6bcb77','#ff5757','#38bdf8','#fb923c','#e879f9','#a3e635'];
-let allO=[],aT='alle',cd=60,tmr=null,bC=null,dC=null;
+let allO=[],aT='alle',cd=300,tmr=null,bC=null,dC=null;
 const tod=()=>new Date().toISOString().split('T')[0];
 const au=(k,s)=>'Basic '+btoa(k+':'+s);
 function ps(o){const r=String(o.statusCode||'').trim();if(/^d+$/.test(r))return r.padStart(2,'0');const l=r.toLowerCase();if(l.includes('ingevoerd'))return'00';if(l.includes('bevestigd'))return'30';if(l.includes('batch'))return'35';if(l.includes('uitvoering'))return'40';if(l.includes('geconsolideerd'))return'42';if(l.includes('gedeeltelijk'))return'50';if(l.includes('onvolledig'))return'65';if(l.includes('volledig'))return'60';if(l.includes('geen'))return'70';return r;}
@@ -141,7 +141,7 @@ function Drender(){
   document.getElementById('D-tbl-count').textContent=rows.length+' van '+tot+' getoond';
   document.getElementById('D-tbl').innerHTML=rows.length?rows.map(o=>'<tr><td style="font-weight:600">'+o._n+'</td><td style="color:var(--text2)">'+o.number+'</td><td style="color:var(--text2)">'+(o.reference||o.additionalReference||'')+'</td><td style="color:var(--teal);font-weight:700">'+o._t+'</td><td>'+sp(o._s)+'</td><td style="color:var(--text2)">'+(CN[o._c]||o._c)+'</td><td class="r" style="color:var(--text3)">'+(o.deliveryDate||'')+'</td></tr>').join(''):'<tr><td colspan="7" style="text-align:center;color:var(--text3);padding:28px">Geen orders gevonden voor vandaag</td></tr>';}
 window.Dtype=function(t,btn){aT=t;document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');Drender();};
-function Dreset(){cd=60;if(tmr)clearInterval(tmr);const pb=document.getElementById('D-pbar');tmr=setInterval(()=>{cd--;const e=document.getElementById('D-cd');if(e)e.textContent='Refresh over '+cd+'s';if(pb)pb.style.width=(cd/60*100)+'%';if(cd<=0)Dfetch();},1000);}
+function Dreset(){cd=300;if(tmr)clearInterval(tmr);const pb=document.getElementById('D-pbar');tmr=setInterval(()=>{cd--;const e=document.getElementById('D-cd');if(e)e.textContent=cd>=60?'Refresh over '+(Math.floor(cd/60))+'m'+(cd%60>0?' '+cd%60+'s':''):'Refresh over '+cd+'s';if(pb)pb.style.width=(cd/300*100)+'%';if(cd<=0)Dfetch();},1000);}
 document.getElementById('D-date').textContent=new Date().toLocaleDateString('nl-NL',{day:'2-digit',month:'2-digit',year:'numeric'}).replace(///g,'-');
 Dfetch();
 </script>
