@@ -3,4 +3,4 @@ COPY index.html /usr/share/nginx/html/index.html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 
-# refresh-trigger-v7
+# refresh-trigger-v8
